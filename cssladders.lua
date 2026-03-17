@@ -1,4 +1,4 @@
--- Working CSS Ladders 0.3 by Brainles$
+-- Working CSS Ladders 0.4 by Brainles$
 -- Place in init folder
 -- Early release for testing, cleanup, and finetuning will be done.
 -- ladder dismount and sideways climbing to be added later.
@@ -24,10 +24,11 @@ CssLadderDirections = {
     vector3(0.923, -0.382, 0)
 }
 
+--Laddertimer can be set to 0 to be on think, but for online 0.1 might be better.
 if CssLadderThink then HaltTimer(CssLadderThink) end
-CssLadderThink = AddTimer(0, 0, function()
+CssLadderThink = AddTimer(0.1, 0, function()
     for i = 1, _MaxPlayers() do
-        if _PlayerInfo(i, "alive") then
+        if _PlayerInfo(i, "connected") then
             local isonladder = false
             local origin = _EntGetPos(i)
 
@@ -40,38 +41,36 @@ CssLadderThink = AddTimer(0, 0, function()
                 end
             end
 
-            if not isonladder then
-                 _PlayerLockInPlace(i, false)
-                return
-            end
+            if isonladder then
+                if _PlayerIsKeyDown(i, IN_FORWARD) then
+                    _TraceSetMask(MASK_SOLID)
+                    _TraceLine(_PlayerGetShootPos(i), vector3(0, 0, -1), 80, i)
 
-            if _PlayerIsKeyDown(i, IN_FORWARD) then
-                _TraceSetMask(MASK_SOLID)
-                _TraceLine(_PlayerGetShootPos(i), vector3(0, 0, -1), 80, i)
+                    local newvel = vecMul(vector3(0, 0, 1), _PlayerGetShootAng(i))
 
-                local newvel = vecMul(vector3(0,0,1), _PlayerGetShootAng(i))
+                    if _TraceHitWorld() then
+                        newvel = vecMul(vector3(150, 150, 1), _PlayerGetShootAng(i))
+                    end
 
-                if _TraceHitWorld() then
-                    newvel = vecMul(vector3(150, 150, 1), _PlayerGetShootAng(i))
+                    _PlayerLockInPlace(i, false)
+                    _EntSetVelocity(i, vecMul(newvel, vector3(1, 1, 300)))
+                elseif _PlayerIsKeyDown(i, IN_BACK) then
+                    _TraceSetMask(MASK_SOLID)
+                    _TraceLine(_PlayerGetShootPos(i), vector3(0, 0, -1), 80, i)
+
+                    local newvel = vecMul(vector3(0, 0, 1), _PlayerGetShootAng(i))
+
+                    if _TraceHitWorld() then
+                        newvel = vecMul(vector3(150, 150, 1), _PlayerGetShootAng(i))
+                    end
+
+                    _PlayerLockInPlace(i, false)
+                    _EntSetVelocity(i, vecMul(newvel, vector3(-1, -1, -300)))
+                else
+                    _PlayerLockInPlace(i, true)
                 end
-
-                _PlayerLockInPlace(i, false)
-                _EntSetVelocity(i, vecMul(newvel, vector3(1, 1, 300)))
-
-            elseif _PlayerIsKeyDown(i, IN_BACK) then
-                _TraceSetMask(MASK_SOLID)
-                _TraceLine(_PlayerGetShootPos(i), vector3(0, 0, -1), 80, i)
-
-                local newvel = vecMul(vector3(0,0,1), _PlayerGetShootAng(i))
-
-                if _TraceHitWorld() then
-                    newvel = vecMul(vector3(150, 150, 1), _PlayerGetShootAng(i))
-                end
-
-                _PlayerLockInPlace(i, false)
-                _EntSetVelocity(i, vecMul(newvel, vector3(-1, -1, -300)))
             else
-                _PlayerLockInPlace(i, true)
+                _PlayerLockInPlace(i, false)
             end
         end
     end
