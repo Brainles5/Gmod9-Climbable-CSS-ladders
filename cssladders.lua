@@ -27,7 +27,8 @@ CssLadderDirections = {
 if CssLadderThink then HaltTimer(CssLadderThink) end
 CssLadderThink = AddTimer(0, 0, function()
     for i = 1, _MaxPlayers() do
-        if not _PlayerInfo(i, "alive") or (alive and not alive[i]) then return end
+        if not _PlayerInfo(i, "alive") then return end
+        if (GamePhase and GamePhase == "Live") and not alive[i] then return end
 
         local isonladder = false
         local origin = _EntGetPos(i)
