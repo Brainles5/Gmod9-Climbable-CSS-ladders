@@ -1,9 +1,15 @@
--- Working CSS Ladders 0.4 by Brainles$
+-- Working CSS Ladders 1.0 by Brainles$
 -- Place in init folder
 -- Early release for testing, cleanup, and finetuning will be done.
 -- ladder dismount and sideways climbing to be added later.
 
-LADDERMATERIAL = "TOOLS/TOOLSINVISIBLELADDER"
+-- A lot of different ways to make ladders for CSS... if the map uses any of these for something else than ladders and
+-- is where a player can get to it, might cause issues...
+LADDERMATERIAL = {
+    "TOOLS/TOOLSINVISIBLELADDER",
+    "TOOLS/TOOLSPLAYERCLIP",
+    "TOOLS/TOOLSNODRAW",
+}
 
 CssLadderDirections = {
     vector3(1, 0, 0),
@@ -24,6 +30,13 @@ CssLadderDirections = {
     vector3(0.923, -0.382, 0)
 }
 
+function LadderMaterialChecker(tracemat)
+    for _, laddermaterial in LADDERMATERIAL do
+        if tracemat == laddermaterial then return true end
+    end
+    return false
+end
+
 --Laddertimer can be set to 0 to be on think, but for online 0.1 might be better.
 if CssLadderThink then HaltTimer(CssLadderThink) end
 CssLadderThink = AddTimer(0.1, 0, function()
@@ -35,7 +48,7 @@ CssLadderThink = AddTimer(0.1, 0, function()
             for _, direction in ipairs(CssLadderDirections) do
                 _TraceSetMask(MASK_SOLID)
                 _TraceLine(origin, direction, 40, i)
-                if _TraceGetTexture() == LADDERMATERIAL then
+                if LadderMaterialChecker(_TraceGetTexture()) then
                     isonladder = true
                     break
                 end
