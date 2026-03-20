@@ -45,6 +45,10 @@ CssLadderThink = AddTimer(0.1, 0, function()
             local isonladder = false
             local origin = _EntGetPos(i)
 
+            if _EntGetWaterLevel(i) > 1 then
+                origin = vecAdd(origin, vector3(0,0,10))
+            end
+
             for _, direction in ipairs(CssLadderDirections) do
                 _TraceSetMask(MASK_SOLID)
                 _TraceLine(origin, direction, 40, i)
