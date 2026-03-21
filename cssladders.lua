@@ -1,4 +1,4 @@
--- Working CSS Ladders 1.0 by Brainles$
+-- Working CSS Ladders 1.1 by Brainles$
 -- Place in init folder
 -- Early release for testing, cleanup, and finetuning will be done.
 -- ladder dismount and sideways climbing to be added later.
@@ -45,7 +45,7 @@ CssLadderThink = AddTimer(0.1, 0, function()
             local isonladder = false
             local origin = _EntGetPos(i)
 
-            if _EntGetWaterLevel(i) > 1 then
+            if _EntGetWaterLevel(i) > 0 then
                 origin = vecAdd(origin, vector3(0,0,10))
             end
 
