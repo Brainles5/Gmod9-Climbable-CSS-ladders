@@ -1,4 +1,4 @@
--- Working CSS Ladders 1.1 by Brainles$
+-- Working CSS Ladders 1.0 by Brainles$
 -- Place in init folder
 -- Early release for testing, cleanup, and finetuning will be done.
 -- ladder dismount and sideways climbing to be added later.
@@ -12,22 +12,22 @@ LADDERMATERIAL = {
 }
 
 CssLadderDirections = {
-    vector3(1, 0, 0),
-    vector3(0.923, 0.382, 0),
-    vector3(0.707, 0.707, 0),
-    vector3(0.382, 0.923, 0),
-    vector3(0, 1, 0),
-    vector3(-0.382, 0.923, 0),
-    vector3(-0.707, 0.707, 0),
-    vector3(-0.923, 0.382, 0),
-    vector3(-1, 0, 0),
-    vector3(-0.923, -0.382, 0),
-    vector3(-0.707, -0.707, 0),
-    vector3(-0.382, -0.923, 0),
-    vector3(0, -1, 0),
-    vector3(0.382, -0.923, 0),
-    vector3(0.707, -0.707, 0),
-    vector3(0.923, -0.382, 0)
+    vector3(0.94, 0, 0.342),
+    vector3(0.868, 0.359, 0.342),
+    vector3(0.664, 0.664, 0.342),
+    vector3(0.359, 0.868, 0.342),
+    vector3(0, 0.94, 0.342),
+    vector3(-0.359, 0.868, 0.342),
+    vector3(-0.664, 0.664, 0.342),
+    vector3(-0.868, 0.359, 0.342),
+    vector3(-0.94, 0, 0.342),
+    vector3(-0.868, -0.359, 0.342),
+    vector3(-0.664, -0.664, 0.342),
+    vector3(-0.359, -0.868, 0.342),
+    vector3(0, -0.94, 0.342),
+    vector3(0.359, -0.868, 0.342),
+    vector3(0.664, -0.664, 0.342),
+    vector3(0.868, -0.359, 0.342)
 }
 
 function LadderMaterialChecker(tracemat)
@@ -46,7 +46,7 @@ CssLadderThink = AddTimer(0.1, 0, function()
             local origin = _EntGetPos(i)
 
             if _EntGetWaterLevel(i) > 0 then
-                origin = vecAdd(origin, vector3(0,0,10))
+                origin = vecAdd(origin, vector3(0,0,30))
             end
 
             for _, direction in ipairs(CssLadderDirections) do
